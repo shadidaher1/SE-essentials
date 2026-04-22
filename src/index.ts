@@ -40,7 +40,7 @@ orderManagment.addOrder(newItem, newPrice);
   
   // Fetching an order directly
   const fetchId = 2;
-  const fetchedOrder = orderManagment.getOrderbyId(fetchId);
+  codfgdfgdfgsdfgsdfgnst fetchedOrder = orderManagment.getOrderbyId(fetchId);
   console.log("Order with ID 2:", fetchedOrder);
   
   // Attempt to fetch a non-existent order
