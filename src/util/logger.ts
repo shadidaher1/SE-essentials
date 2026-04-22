@@ -49,6 +49,5 @@ const logger = winston.createLogger({
     }),
   	],
 });
-
 console.log("loogger instialised");
 export default logger;

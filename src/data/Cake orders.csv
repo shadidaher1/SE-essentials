@@ -1,0 +1,11 @@
+Shape,Size,Dietary,Occasion,Box Type,Price,Quantity,Occasion ID,Flavor,Filling,Frosting,Sprinkles,Layers,Decoration,Message Color,Custom Message
+Ones,Oval,Dairy-Free,None,Standard Box,73,4,251,Red Velvet,Strawberry,Fruit,15,3,Buttercream,Lemon,Edible Glitter
+Silver,Happy Birthday,Rectangle,None,Luxury Box with Ribbon,35,4,252,Birthday,Lemon,Cream,8,1,Fondant,Pineapple,Fondant Figures
+Pink,Happy Birthday,Heart-Shaped,Dairy-Free,None,Standard Box,50,2,253,Carrot,Caramel,Cream,20,4,Whipped Cream,Pineapple,Fondant
+Figures,Pink,Happy Birthday,Heart-Shaped,Dairy-Free,None,Standard Box,50,2,254,Carrot,Caramel,Cream,20,4,Ganache,Pineapple,Sprinkles
+Blue,Happy Anniversary,Round,Gluten-Free,None,Standard Box,32,1,255,Coffee,Lemon,Cream,25,1,Whipped Cream,Strawberry,Gold Flakes
+White,Congratulations,Rectangle,None,Organic,Standard Box with Ribbon,73,3,256,Red Velvet,Raspberry,Jam,25,1,Whipped Cream,Vanilla,Fruit Slices
+Yellow,Best Wishes,Oval,Dairy-Free,Premium,None,Standard Box,70,1,257,Pistachio,Orange,Buttercream,None,7,Sponge,Garnish,None
+Mousse,30,4,Ganache,Red Velvet,Gold Flakes,Pink,Just Married,Heart-Shaped,Dairy-Free,None,Luxury Box,63,3,258,Red Velvet,Red Velvet,Cream Cheese
+20,4,Ganache,Red Velvet,Edible Flowers,Multi-Color,Happy Anniversary,Square,Gluten-Free,None,Organic,Standard Box,146,1,260,Fruit,Pineapple,Custard
+30,4,Whipped Cream,Chocolate,None,Chocolate,Dairy-Free,None,Standard Box,97,3,261,Sponge,Vanilla,Cream
