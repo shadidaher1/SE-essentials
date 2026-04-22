@@ -1,0 +1,15 @@
+# Node.js dependencies
+node_modules/
+
+# Build output
+build/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Source maps
+*.map
+
