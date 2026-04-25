@@ -1,31 +1,48 @@
-// src/utils/parser.ts
-import fs from 'fs'; 
-import logger from './logger';
+import { promises as fs } from 'fs';
 import { parse as csvParse } from 'csv-parse';
 import { stringify as csvStringify } from 'csv-stringify';
 
-export const parseCSV = (filePath: string): Promise<string[][]> => {
-  return new Promise((resolve, reject) => {
-    const results: string[][] = []; // Store parsed CSV rows as arrays
-    const readStream = fs.createReadStream(filePath, { encoding: 'utf-8' }); // Create a readable stream for the file
-
-    readStream.on('data', (chunk: string) => {
-      // Process data chunks from the file
-      const lines = chunk.split('\n').filter(line => line.trim() !== ''); // Split data into lines and remove empty lines
-      lines.forEach((line) => {
-        const columns = line.split(',').map(value => value.trim().replace(/^"(.*)"$/, '$1')); 
-        // Split line into columns, trim spaces, and remove quotes
-        results.push(columns); // Add parsed row to results
+/**
+ * Reads a CSV file and returns its contents as a 2D array of strings
+ * @param filePath - Path to the CSV file
+ * @param includeHeader - Whether to include the header row in the output
+ * @returns Promise<string[][]> - 2D array of strings
+ */
+export async function readCSVFile(filePath: string, includeHeader: boolean = false): Promise<string[][]> {
+  try {
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+    return new Promise((resolve, reject) => {
+      csvParse(fileContent, {
+        trim: true,
+        skip_empty_lines: true,
+        relax_column_count: true
+      }, (err, records: string[][]) => {
+        if (err) reject(err);
+        if (!includeHeader) records.shift();
+        resolve(records);
       });
     });
+  } catch (error) {
+    throw new Error(`Error reading CSV file: ${error}`);
+  }
+}
 
-    readStream.on('end', () => {
-      resolve(results); // Resolve the promise with parsed data when done
+/**
+ * Writes a 2D array of strings to a CSV file
+ * @param filePath - Path where the CSV file should be written
+ * @param data - 2D array of strings to write
+ * @returns Promise<void>
+ */
+export async function writeCSVFile(filePath: string, data: string[][]): Promise<void> {
+  try {
+    const csvContent = await new Promise<string>((resolve, reject) => {
+      csvStringify(data, (err, output) => {
+        if (err) reject(err);
+        resolve(output);
+      });
     });
-
-    readStream.on('error', (error) => {
-      logger.error("Error while reading the stream of file %s, $o", filePath, error);
-      reject(error); // Reject the promise if an error occurs
-    });
-  });
-};
+    await fs.writeFile(filePath, csvContent, 'utf-8');
+  } catch (error) {
+    throw new Error(`Error writing CSV file: ${error}`);
+  }
+}

@@ -1,19 +1,14 @@
 
 import path from 'path';
-import {parseCSV} from './util/parser'
-import logger from './util/logger';
+import logger from "./util/logger";
+import { readCSVFile } from "./util/parser";
 
-const filePath = path.resolve(__dirname, './data/Cake orders.csv');
 
 async function main() {
-    try {
-        const products = await parseCSV(filePath)
-        for (const product of products) {
-            logger.info(product + '\n');
-        }
-    } catch(error) {
-        logger.error(error)
-    }
+  const filePath = path.resolve(__dirname, './data/Cake orders.csv');
+  const data = await readCSVFile(filePath, true);
+  // for each data row, log the row
+  data.forEach((row) => logger.info(row));
 }
 
 main();

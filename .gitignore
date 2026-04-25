@@ -3,6 +3,8 @@ node_modules/
 
 # Build output
 build/
+coverage/
+
 
 # Environment variables
 .env
