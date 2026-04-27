@@ -5,7 +5,11 @@ import { promises as fs } from 'fs';
 describe('CSV Parser', () => {
   const testDir = path.join(__dirname, 'test-data-csv');
   const csvFilePath = path.join(testDir, 'test.csv');
+<<<<<<< HEAD
   const mockCakeOrdersPath = path.join(testDir, 'mock-cake-orders.csv');
+=======
+  const validCsvPath = path.join(__dirname, '../src/data/cake orders.csv');
+>>>>>>> 411414f (added the XML parse and JSON parser for assignment1 with unit tests for each)
 
   beforeAll(async () => {
     // Create test directory if it doesn't exist
@@ -14,6 +18,7 @@ describe('CSV Parser', () => {
     } catch (error) {
       // Directory might already exist
     }
+<<<<<<< HEAD
 
     // Create mock cake orders CSV file with a few rows
     const mockCakeOrdersData = `"id","Type","Flavor","Filling","Size","Layers","Frosting Type","Frosting Flavor","Decoration Type","Decoration Color","Custom Message","Shape","Allergies","Special Ingredients","Packaging Type","Price","Quantity"
@@ -21,6 +26,8 @@ describe('CSV Parser', () => {
 "1","Chocolate","Chocolate","Ganache","25","3","Fondant","Chocolate","Fondant Figures","Red","Congrats","Square","Gluten-Free","Vegan","Luxury Box with Ribbon","75","2"
 "2","Fruit","Lemon","Jam","15","1","Whipped Cream","Lemon","Edible Flowers","Yellow","","Heart-Shaped","None","Sugar-Free","Standard Box","40","1"`;
     await fs.writeFile(mockCakeOrdersPath, mockCakeOrdersData, 'utf-8');
+=======
+>>>>>>> 411414f (added the XML parse and JSON parser for assignment1 with unit tests for each)
   });
 
   afterAll(async () => {
@@ -114,8 +121,13 @@ describe('CSV Parser', () => {
       await expect(readCSVFile(nonExistentPath, false)).rejects.toThrow();
     });
 
+<<<<<<< HEAD
     it('should read mock cake orders CSV file', async () => {
       const result = await readCSVFile(mockCakeOrdersPath, true);
+=======
+    it('should read actual cake orders CSV file', async () => {
+      const result = await readCSVFile(validCsvPath, true);
+>>>>>>> 411414f (added the XML parse and JSON parser for assignment1 with unit tests for each)
       
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBeGreaterThan(0);
