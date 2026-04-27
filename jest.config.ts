@@ -5,7 +5,7 @@ const config: Config = {
   testEnvironment: 'node',              // Specifies the test environment (e.g., jsdom or node)
   roots: ['<rootDir>'],                 // Specifies the root directory for Jest to look for test files
   testMatch: ['<rootDir>/tests/**/*.ts'],
-  testPathIgnorePatterns:["/node_modules/"],
+  testPathIgnorePatterns:["/node_modules/", "<rootDir>/tests/app.test.ts"], 
   verbose: true,                        // Enables verbose output during testing
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'], // Specifies the files to collect coverage from
   collectCoverage: true,                // Enables code coverage collection

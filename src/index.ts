@@ -5,8 +5,8 @@ import { readCSVFile } from "./util/parser";
 
 
 async function main() {
-  const filePath = path.resolve(__dirname, './data/Cake orders.csv');
-  const data = await readCSVFile(filePath, true);
+  const filePath = path.resolve(__dirname, './data/cake orders.csv');
+  const data = await readCSVFile(filePath);
   // for each data row, log the row
   data.forEach((row) => logger.info(row));
 }
