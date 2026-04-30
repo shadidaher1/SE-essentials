@@ -1,16 +1,16 @@
 import { Item, ItemCategory } from "./Item.Model";
 
-type Type = "Sponge" | "Chocolate" | "Fruit" | "Red Velvet" | "Birthday" | "Coffee" | "Carrot" | "Marble";
-type Flavor = "Vanilla" | "Chocolate" | "Lemon" | "Strawberry" | "Red Velvet" | "Pineapple" | "Caramel" | "Coffee" | "Dark Chocolate";
-type Filling = "Cream" | "Ganache" | "Jam" | "Cream Cheese" | "Fruit" | "Mousse" | "Custard" | "Strawberry Jam";
-type FrostingType = "Buttercream" | "Fondant" | "Whipped Cream" | "Ganache";
-type FrostingFlavor = "Vanilla" | "Chocolate" | "Lemon" | "Strawberry" | "Red Velvet" | "Pineapple" | "Caramel" | "Coffee";
-type DecorationType = "Sprinkles" | "Fondant Figures" | "Edible Flowers" | "Edible Glitter" | "Edible Beads" | "Custom Shapes" | "Fruit Slices" | "Gold Flakes" | "Edible Letters" | "Flowers";
-type DecorationColor = "Multi-color" | "Red" | "Yellow" | "Gold" | "Pink" | "White" | "Brown" | "Blue" | "Silver" | "Purple";
-type Shape = "Round" | "Square" | "Heart-Shaped" | "Oval" | "Rectangle";
-type Allergies = "Nut-Free" | "Gluten-Free" | "Dairy-Free" | "None";
-type SpecialIngredients = "Organic Ingredients" | "Vegan" | "Sugar-Free" | "Organic" | "None" | "Edible Gold Dust";
-type PackagingType = "Standard Box" | "Luxury Box with Ribbon" | "Luxury Box" | "Standard Box with Ribbon" | "Box";
+export type Type = "Sponge" | "Chocolate" | "Fruit" | "Red Velvet" | "Birthday" | "Coffee" | "Carrot" | "Marble";
+export type Flavor = "Vanilla" | "Chocolate" | "Lemon" | "Strawberry" | "Red Velvet" | "Pineapple" | "Caramel" | "Coffee" | "Dark Chocolate";
+export type Filling = "Cream" | "Ganache" | "Jam" | "Cream Cheese" | "Fruit" | "Mousse" | "Custard" | "Strawberry Jam";
+export type FrostingType = "Buttercream" | "Fondant" | "Whipped Cream" | "Ganache";
+export type FrostingFlavor = "Vanilla" | "Chocolate" | "Lemon" | "Strawberry" | "Red Velvet" | "Pineapple" | "Caramel" | "Coffee";
+export type DecorationType = "Sprinkles" | "Fondant Figures" | "Edible Flowers" | "Edible Glitter" | "Edible Beads" | "Custom Shapes" | "Fruit Slices" | "Gold Flakes" | "Edible Letters" | "Flowers";
+export type DecorationColor = "Multi-color" | "Red" | "Yellow" | "Gold" | "Pink" | "White" | "Brown" | "Blue" | "Silver" | "Purple";
+export type Shape = "Round" | "Square" | "Heart-Shaped" | "Oval" | "Rectangle";
+export type Allergies = "Nut-Free" | "Gluten-Free" | "Dairy-Free" | "None";
+export type SpecialIngredients = "Organic Ingredients" | "Vegan" | "Sugar-Free" | "Organic" | "None" | "Edible Gold Dust";
+export type PackagingType = "Standard Box" | "Luxury Box with Ribbon" | "Luxury Box" | "Standard Box with Ribbon" | "Box";
 
 class Cake implements Item {
     private cakeType: Type;
