@@ -1,11 +1,11 @@
 import { Item, ItemCategory } from "./Item.Model";
 
-type ToyType = "Plush Toy" | "Building Blocks" | "Action Figure" | "Doll" | "Puzzle" | "Art Kit" | "Remote Car" | "Educational Toy" | "Board Game";
-type AgeGroup = "0-3" | "4-7" | "8-12" | "13+";
-type Brand = "FunTime" | "BuildSmart" | "Adventure Co." | "ToyLand" | "KidzJoy" | "Creative Minds" | "PlayMasters";
-type Material = "Fabric" | "Plastic" | "Foam" | "Wood" | "Metal";
-type BatteryRequired = "Yes" | "No";
-type Educational = "Yes" | "No";
+export type ToyType = "Plush Toy" | "Building Blocks" | "Action Figure" | "Doll" | "Puzzle" | "Art Kit" | "Remote Car" | "Educational Toy" | "Board Game";
+export type AgeGroup = "0-3" | "4-7" | "8-12" | "13+";
+export type Brand = "FunTime" | "BuildSmart" | "Adventure Co." | "ToyLand" | "KidzJoy" | "Creative Minds" | "PlayMasters";
+export type Material = "Fabric" | "Plastic" | "Foam" | "Wood" | "Metal";
+export type BatteryRequired = "Yes" | "No";
+export type Educational = "Yes" | "No";
 
 class Toy implements Item {
     private orderId: string;

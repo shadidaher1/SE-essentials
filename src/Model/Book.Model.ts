@@ -1,11 +1,11 @@
 import { Item, ItemCategory } from "./Item.Model";
 
-type Genre = "Science Fiction" | "Thriller" | "Biography" | "Mystery" | "Fantasy" | "Romance" | "Historical Fiction" | "Non-Fiction";
-type Format = "Paperback" | "Hardcover" | "Audiobook" | "E-Book";
-type Language = "French" | "Spanish" | "Japanese" | "English" | "Chinese" | "German";
-type Publisher = "Oxford Press" | "Hachette Book Group" | "Macmillan Publishers" | "Scholastic" | "Simon & Schuster" | "HarperCollins" | "Penguin Random House";
-type SpecialEdition = "Signed Copy" | "Limited Edition" | "None" | "Collector's Edition" | "Illustrated Edition";
-type Packaging = "Eco-Friendly Packaging" | "Standard Wrap" | "Luxury Box" | "Gift Wrap";
+export type Genre = "Science Fiction" | "Thriller" | "Biography" | "Mystery" | "Fantasy" | "Romance" | "Historical Fiction" | "Non-Fiction";
+export type Format = "Paperback" | "Hardcover" | "Audiobook" | "E-Book";
+export type Language = "French" | "Spanish" | "Japanese" | "English" | "Chinese" | "German";
+export type Publisher = "Oxford Press" | "Hachette Book Group" | "Macmillan Publishers" | "Scholastic" | "Simon & Schuster" | "HarperCollins" | "Penguin Random House";
+export type SpecialEdition = "Signed Copy" | "Limited Edition" | "None" | "Collector's Edition" | "Illustrated Edition";
+export type Packaging = "Eco-Friendly Packaging" | "Standard Wrap" | "Luxury Box" | "Gift Wrap";
 
 class Book implements Item {
     private orderId: string;
