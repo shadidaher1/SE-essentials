@@ -1,4 +1,4 @@
-import { Item, ItemCategory } from "./Item.Model";
+import { IItem, ItemCategory } from "./IItem";
 
 export type Type = "Sponge" | "Chocolate" | "Fruit" | "Red Velvet" | "Birthday" | "Coffee" | "Carrot" | "Marble";
 export type Flavor = "Vanilla" | "Chocolate" | "Lemon" | "Strawberry" | "Red Velvet" | "Pineapple" | "Caramel" | "Coffee" | "Dark Chocolate";
@@ -12,7 +12,7 @@ export type Allergies = "Nut-Free" | "Gluten-Free" | "Dairy-Free" | "None";
 export type SpecialIngredients = "Organic Ingredients" | "Vegan" | "Sugar-Free" | "Organic" | "None" | "Edible Gold Dust";
 export type PackagingType = "Standard Box" | "Luxury Box with Ribbon" | "Luxury Box" | "Standard Box with Ribbon" | "Box";
 
-class Cake implements Item {
+class Cake implements IItem {
     private cakeType: Type;
     private flavor: Flavor;
     private filling: Filling;

@@ -1,5 +1,5 @@
 
-export interface Item {
+export interface IItem {
     getCategory(): ItemCategory;
 }
 

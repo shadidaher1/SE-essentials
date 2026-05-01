@@ -49,6 +49,10 @@ export class CakeBuilder {
     //     this.packagingType = "Standard Box";
     // }
 
+    public static newBuilder(): CakeBuilder {
+        return new CakeBuilder();
+    }
+
     setCakeType(cakeType: Type): CakeBuilder {
         this.cakeType = cakeType;
         return this;
