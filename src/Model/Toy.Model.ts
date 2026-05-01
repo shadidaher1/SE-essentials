@@ -1,4 +1,4 @@
-import { Item, ItemCategory } from "./Item.Model";
+import { IItem, ItemCategory } from "./IItem";
 
 export type ToyType = "Plush Toy" | "Building Blocks" | "Action Figure" | "Doll" | "Puzzle" | "Art Kit" | "Remote Car" | "Educational Toy" | "Board Game";
 export type AgeGroup = "0-3" | "4-7" | "8-12" | "13+";
@@ -7,7 +7,7 @@ export type Material = "Fabric" | "Plastic" | "Foam" | "Wood" | "Metal";
 export type BatteryRequired = "Yes" | "No";
 export type Educational = "Yes" | "No";
 
-class Toy implements Item {
+class Toy implements IItem {
     private orderId: string;
     private toyType: ToyType;
     private ageGroup: AgeGroup;

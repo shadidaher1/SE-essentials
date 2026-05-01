@@ -1,4 +1,4 @@
-import { Item, ItemCategory } from "./Item.Model";
+import { IItem, ItemCategory } from "./IItem";
 
 export type Genre = "Science Fiction" | "Thriller" | "Biography" | "Mystery" | "Fantasy" | "Romance" | "Historical Fiction" | "Non-Fiction";
 export type Format = "Paperback" | "Hardcover" | "Audiobook" | "E-Book";
@@ -7,7 +7,7 @@ export type Publisher = "Oxford Press" | "Hachette Book Group" | "Macmillan Publ
 export type SpecialEdition = "Signed Copy" | "Limited Edition" | "None" | "Collector's Edition" | "Illustrated Edition";
 export type Packaging = "Eco-Friendly Packaging" | "Standard Wrap" | "Luxury Box" | "Gift Wrap";
 
-class Book implements Item {
+class Book implements IItem {
     private orderId: string;
     private bookTitle: string;
     private author: string;
