@@ -1,6 +1,6 @@
-import { IItem } from "../IItem";
-import { IOrder } from "../IOrder";
-import { Order } from "../Order.Model";
+import { IIdentifiableItem, IItem } from "../IItem";
+import { IIdentifiableOrderItem, IOrder } from "../IOrder";
+import { IdetifiableOrderItem, Order } from "../Order.Model";
 
 export class OrderBuilder {
     private item!: IItem;
@@ -31,10 +31,35 @@ export class OrderBuilder {
         return new OrderBuilder();
     }
 
-    build(): IOrder {
+    build(): Order {
         if (!this.item || !this.price || !this.id || !this.quantity) {
             throw new Error("Missing required fields to build Order");
         }
         return new Order(this.item, this.price, this.id, this.quantity);
+    }
+}
+
+export class IdentifiableOrderItemBuilder {
+    private identifiableItem!: IIdentifiableItem;
+    private order!: Order;
+    
+
+    setIdentifiableItem(identifiableItem: IIdentifiableItem): this {
+        this.identifiableItem = identifiableItem;
+        return this;
+    }
+   
+    setOrder(order: Order): this {
+        this.order = order;
+        return this;
+    }
+    build(): IIdentifiableOrderItem {
+        if (!this.identifiableItem || !this.order) {
+            throw new Error("Missing required fields to build IdetifiableOrderItem");
+        }
+        return new IdetifiableOrderItem(this.identifiableItem, this.order.getPrice(), this.order.getID(), this.order.getQuantity());
+    }
+    public static newBuilder(): IdentifiableOrderItemBuilder {
+        return new IdentifiableOrderItemBuilder();
     }
 }

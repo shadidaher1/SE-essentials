@@ -18,6 +18,21 @@ export class CSVBookMapper implements IMapper<string[], Book> {
             .setQuantity(parseInt(input[10]))
             .build();
     }
+    reverseMap(input: Book): string[] {
+        return [
+            input.getOrderId(),
+            input.getBookTitle(),
+            input.getAuthor(),
+            input.getGenre(),
+            input.getFormat(),
+            input.getLanguage(),
+            input.getPublisher(),
+            input.getSpecialEdition(),
+            input.getPackaging(),
+            String(input.getPrice()),
+            String(input.getQuantity())
+        ]
+    }
 }
 
 function getXmlValue(input: any, key: string): string {
@@ -41,6 +56,21 @@ export class JSONBookMapper implements IMapper<any, Book> {
             .setQuantity(parseInt(input["Quantity"]))
             .build();
     }
+    reverseMap(input: Book): string[] {
+        return [
+            input.getOrderId(),
+            input.getBookTitle(),
+            input.getAuthor(),
+            input.getGenre(),
+            input.getFormat(),
+            input.getLanguage(),
+            input.getPublisher(),
+            input.getSpecialEdition(),
+            input.getPackaging(),
+            String(input.getPrice()),
+            String(input.getQuantity())
+        ]
+    }
 }
 
 export class XMLBookMapper implements IMapper<any, Book> {
@@ -58,5 +88,20 @@ export class XMLBookMapper implements IMapper<any, Book> {
             .setPrice(parseFloat(getXmlValue(input, "Price")))
             .setQuantity(parseInt(getXmlValue(input, "Quantity")))
             .build();
+    }
+        reverseMap(input: Book): string[] { 
+        return [
+            input.getOrderId(),
+            input.getBookTitle(),
+            input.getAuthor(),
+            input.getGenre(),
+            input.getFormat(),
+            input.getLanguage(),
+            input.getPublisher(),
+            input.getSpecialEdition(),
+            input.getPackaging(),
+            String(input.getPrice()),
+            String(input.getQuantity())
+        ]
     }
 }

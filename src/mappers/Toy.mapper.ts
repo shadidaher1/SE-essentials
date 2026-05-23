@@ -16,6 +16,19 @@ export class CSVToyMapper implements IMapper<string[], Toy> {
             .setQuantity(parseInt(input[8]))
             .build();
     }
+        reverseMap(input: Toy): string[] {
+        return [
+            input.getOrderId(),
+            input.getToyType(),
+            input.getAgeGroup(),
+            input.getBrand(),
+            input.getMaterial(),
+            input.getBatteryRequired(),
+            input.getEducational(),
+            String(input.getPrice()),
+            String(input.getQuantity())
+        ]
+    }
 }
 
 function getXmlValue(input: any, key: string): string {
@@ -37,6 +50,19 @@ export class JSONToyMapper implements IMapper<any, Toy> {
             .setQuantity(parseInt(input["Quantity"]))
             .build();
     }
+    reverseMap(input: Toy): string[] {
+        return [
+            input.getOrderId(),
+            input.getToyType(),
+            input.getAgeGroup(),
+            input.getBrand(),
+            input.getMaterial(),
+            input.getBatteryRequired(),
+            input.getEducational(),
+            String(input.getPrice()),
+            String(input.getQuantity())
+        ]
+    }
 }
 
 export class XMLToyMapper implements IMapper<any, Toy> {
@@ -53,4 +79,18 @@ export class XMLToyMapper implements IMapper<any, Toy> {
             .setQuantity(parseInt(getXmlValue(input, "Quantity")))
             .build();
     }
+    reverseMap(input: Toy): string[] {
+        return [
+            input.getOrderId(),
+            input.getToyType(),
+            input.getAgeGroup(),
+            input.getBrand(),
+            input.getMaterial(),
+            input.getBatteryRequired(),
+            input.getEducational(),
+            String(input.getPrice()),
+            String(input.getQuantity())
+        ]
+    }
+
 }

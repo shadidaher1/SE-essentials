@@ -1,4 +1,4 @@
-import { IItem, ItemCategory } from "./IItem";
+import { IIdentifiableItem, IItem, ItemCategory } from "./IItem";
 
 export type Type = "Sponge" | "Chocolate" | "Fruit" | "Red Velvet" | "Birthday" | "Coffee" | "Carrot" | "Marble";
 export type Flavor = "Vanilla" | "Chocolate" | "Lemon" | "Strawberry" | "Red Velvet" | "Pineapple" | "Caramel" | "Coffee" | "Dark Chocolate";
@@ -172,5 +172,30 @@ class Cake implements IItem {
         return this.packagingType;
     }
 }
-
+export class IdetifiableCake extends Cake implements IIdentifiableItem {
+    private id: string;
+    constructor(
+        id: string,
+        cakeType: Type,
+        flavor: Flavor,
+        filling: Filling,
+        size: number,
+        layers: number,
+        frostingType: FrostingType,
+        frostingFlavor: FrostingFlavor,
+        decorationType: DecorationType,
+        decorationColor: DecorationColor,
+        customMessage: string,
+        shape: Shape,
+        allergies: Allergies,
+        specialIngredients: SpecialIngredients,
+        packagingType: PackagingType
+    ) {
+        super(cakeType, flavor, filling, size, layers, frostingType, frostingFlavor, decorationType, decorationColor, customMessage, shape, allergies, specialIngredients, packagingType);
+        this.id = id;
+    }
+    getID(): string {
+        return this.id;
+    }
+}
 export default Cake;

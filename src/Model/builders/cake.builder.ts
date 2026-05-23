@@ -11,7 +11,8 @@ import {
     Shape,
     Allergies,
     SpecialIngredients,
-    PackagingType
+    PackagingType,
+    IdetifiableCake
 } from "../Cake.Model";
 import Cake from "../Cake.Model";
 
@@ -163,4 +164,44 @@ export class CakeBuilder {
             this.packagingType
         );
     }
+}
+export class IdetifiableCakeBuilder {
+    private id!: string;
+    private cake!: Cake;
+
+    static newBuilder(): IdetifiableCakeBuilder {
+        return new IdetifiableCakeBuilder();
+    }
+    setId(id: string): IdetifiableCakeBuilder {
+        this.id = id;
+        return this;
+    }
+    setCake(cake: Cake): IdetifiableCakeBuilder {
+        this.cake = cake;
+        return this;
+    }
+    build(): IdetifiableCake {
+        if (this.id === undefined || this.cake === undefined) {
+            logger.error("Missing required property: id or cake");
+            throw new Error("Missing required property: id or cake");
+        }
+        return new IdetifiableCake(
+            this.id,
+            this.cake.getCakeType(),
+            this.cake.getFlavor(),
+            this.cake.getFilling(),
+            this.cake.getSize(),
+            this.cake.getLayers(),
+            this.cake.getFrostingType(),
+            this.cake.getFrostingFlavor(),
+            this.cake.getDecorationType(),
+            this.cake.getDecorationColor(),
+            this.cake.getCustomMessage(),
+            this.cake.getShape(),
+            this.cake.getAllergies(),
+            this.cake.getSpecialIngredients(),
+            this.cake.getPackagingType()
+        );
+    }
+
 }

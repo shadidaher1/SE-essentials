@@ -1,8 +1,22 @@
-import { CakeBuilder } from "../Model/builders/cake.builder";
-import Cake from "../Model/Cake.Model";
+import { CakeBuilder, IdetifiableCakeBuilder } from "../Model/builders/cake.builder";
+import Cake, { IdetifiableCake } from "../Model/Cake.Model";
 import { IMapper } from "./IMapper";
+import {
+    Type,
+    Flavor,
+    Filling,
+    FrostingType,
+    FrostingFlavor,
+    DecorationType,
+    DecorationColor,
+    Shape,
+    Allergies,
+    SpecialIngredients,
+    PackagingType,
+} from "../Model/Cake.Model";
 
 export class CSVCakeMapper implements IMapper<string[], Cake> {
+
     map(input: string[]): Cake {
         return CakeBuilder.newBuilder()
             .setCakeType(input[1] as any)
@@ -20,6 +34,24 @@ export class CSVCakeMapper implements IMapper<string[], Cake> {
             .setSpecialIngredients(input[13] as any)
             .setPackagingType(input[14] as any)
             .build();
+    }
+    reverseMap(input: Cake): string[] {
+        return [
+            input.getCakeType(),
+            input.getFlavor(),
+            input.getFilling(),
+            String(input.getSize()),
+            String(input.getLayers()),
+            input.getFrostingType(),
+            input.getFrostingFlavor(),
+            input.getDecorationType(),
+            input.getDecorationColor(),
+            input.getCustomMessage(),
+            input.getShape(),
+            input.getAllergies(),
+            input.getSpecialIngredients(),
+            input.getPackagingType()
+        ]
     }
 }
 
@@ -47,6 +79,24 @@ export class JSONCakeMapper implements IMapper<any, Cake> {
             .setPackagingType(input["Packaging Type"] as any)
             .build();
     }
+    reverseMap(input: Cake): string[] {
+        return [
+            input.getCakeType(),
+            input.getFlavor(),
+            input.getFilling(),
+            String(input.getSize()),
+            String(input.getLayers()),
+            input.getFrostingType(),
+            input.getFrostingFlavor(),
+            input.getDecorationType(),
+            input.getDecorationColor(),
+            input.getCustomMessage(),
+            input.getShape(),
+            input.getAllergies(),
+            input.getSpecialIngredients(),
+            input.getPackagingType()
+        ];
+    }
 }
 
 export class XMLCakeMapper implements IMapper<any, Cake> {
@@ -68,4 +118,87 @@ export class XMLCakeMapper implements IMapper<any, Cake> {
             .setPackagingType(getXmlValue(input, "Packaging Type") as any)
             .build();
     }
+    reverseMap(input: Cake): string[] {
+        return [
+            input.getCakeType(),
+            input.getFlavor(),
+            input.getFilling(),
+            String(input.getSize()),
+            String(input.getLayers()),
+            input.getFrostingType(),
+            input.getFrostingFlavor(),
+            input.getDecorationType(),
+            input.getDecorationColor(),
+            input.getCustomMessage(),
+            input.getShape(),
+            input.getAllergies(),
+            input.getSpecialIngredients(),
+            input.getPackagingType()
+        ];
+    }
+}
+export interface SQLiteCake {
+   
+
+    cakeType: Type;   // ✅ was: type: Type
+    flavor: Flavor;
+    filling: Filling;
+    size: number;
+    layers: number;
+    frostingType: FrostingType;
+    frostingFlavor: FrostingFlavor;
+    decorationType: DecorationType;
+    decorationColor: DecorationColor;
+    customMessage: string;
+    shape: Shape;
+    allergies: Allergies;
+    specialIngredients: SpecialIngredients;
+    packagingType: PackagingType;
+    id: string;
+}
+
+export class SQLiteCakeMapper implements IMapper<SQLiteCake, IdetifiableCake> {
+    map(input: SQLiteCake): IdetifiableCake {
+        return IdetifiableCakeBuilder.newBuilder()
+            .setCake(CakeBuilder.newBuilder()
+                .setCakeType(input.cakeType)
+                .setFlavor(input.flavor)
+                .setFilling(input.filling)
+                .setSize(input.size)
+                .setLayers(input.layers)
+                .setFrostingType(input.frostingType)
+                .setFrostingFlavor(input.frostingFlavor)
+                .setDecorationType(input.decorationType)
+                .setDecorationColor(input.decorationColor)
+                .setCustomMessage(input.customMessage)
+                .setShape(input.shape)
+                .setAllergies(input.allergies)
+                .setSpecialIngredients(input.specialIngredients)
+                .setPackagingType(input.packagingType)
+                .build())
+            .setId(input.id)
+            .build();
+            
+    }
+    reverseMap(input: IdetifiableCake): SQLiteCake {
+       return {
+        id: input.getID(),
+        cakeType: input.getCakeType(),
+        flavor: input.getFlavor(),
+        filling: input.getFilling(),
+        size: input.getSize(),
+        layers: input.getLayers(),
+        frostingType: input.getFrostingType(),
+        frostingFlavor: input.getFrostingFlavor(),
+        decorationType: input.getDecorationType(),
+        decorationColor: input.getDecorationColor(),
+        customMessage: input.getCustomMessage(),
+        shape: input.getShape(),
+        allergies: input.getAllergies(),
+        specialIngredients: input.getSpecialIngredients(),
+        packagingType: input.getPackagingType()
+       }
+
+    }
+
 }
