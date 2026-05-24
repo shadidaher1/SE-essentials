@@ -16,6 +16,8 @@ import { PGCakeRepository } from './repository/postgres/Cake.postgres.repository
 import { PGBookRepository } from './repository/postgres/Book.postgres.repository';
 import { PGToyRepository } from './repository/postgres/Toy.postgres.repository';
 import { PGOrderRepository } from './repository/postgres/Order.postgres.repository';
+import { DBMode, RepositoryFactory } from "./repository/Repository.factory";
+import { ItemCategory } from "./Model/IItem";
 
 
 
@@ -99,8 +101,7 @@ async function DBSandbox() {
 
   // ==================== CAKE ====================
   console.log("\n===== CAKE CRUD =====");
-  const dbOrder = new OrderRepository(new CakeRepository());
-  await dbOrder.init();
+  const dbOrder = await RepositoryFactory.create(DBMode.SQLITE, ItemCategory.CAKE);
 
   const cake = new CakeBuilder()
     .setCakeType("Chocolate")
@@ -141,6 +142,7 @@ async function DBSandbox() {
   console.log("\n===== BOOK CRUD =====");
   const bookRepo = new BookRepository();
   await bookRepo.init();
+
 
   const book = new BookBuilder()
     .setBookTitle("Clean Code")
