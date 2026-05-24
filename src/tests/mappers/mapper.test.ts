@@ -45,7 +45,7 @@ describe("Mapper implementations", () => {
       "Quantity": "5"
     });
 
-    expect(book.getOrderId()).toBe("2001");
+
     expect(book.getBookTitle()).toBe("Edge of Eternity");
     expect(book.getPrice()).toBe(12);
     expect(book.getQuantity()).toBe(5);
@@ -65,7 +65,6 @@ describe("Mapper implementations", () => {
       Quantity: ["7"]
     });
 
-    expect(toy.getOrderId()).toBe("5001");
     expect(toy.getToyType()).toBe("Plush Toy");
     expect(toy.getPrice()).toBe(247);
     expect(toy.getQuantity()).toBe(7);
@@ -75,7 +74,7 @@ describe("Mapper implementations", () => {
     const mapper = new CSVToyMapper();
     const toy = mapper.map(["5001", "Plush Toy", "13+", "FunTime", "Fabric", "Yes", "Yes", "247", "7"]);
 
-    expect(toy.getOrderId()).toBe("5001");
+    
     expect(toy.getToyType()).toBe("Plush Toy");
     expect(toy.getMaterial()).toBe("Fabric");
     expect(toy.getQuantity()).toBe(7);

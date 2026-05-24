@@ -5,12 +5,12 @@ import {
     Language,
     Publisher,
     SpecialEdition,
-    Packaging
+    Packaging,
+    IdetifiableBook
 } from "../Book.Model";
 import Book from "../Book.Model";
 
 export class BookBuilder {
-    private orderId!: string;
     private bookTitle!: string;
     private author!: string;
     private genre!: Genre;
@@ -22,9 +22,8 @@ export class BookBuilder {
     private price!: number;
     private quantity!: number;
 
-    setOrderId(orderId: string): BookBuilder {
-        this.orderId = orderId;
-        return this;
+    public static newBuilder(): BookBuilder {
+        return new BookBuilder();
     }
 
     setBookTitle(bookTitle: string): BookBuilder {
@@ -79,7 +78,6 @@ export class BookBuilder {
 
     build(): Book {
         const reqProperties = [
-            this.orderId,
             this.bookTitle,
             this.author,
             this.genre,
@@ -100,7 +98,6 @@ export class BookBuilder {
         }
 
         return new Book(
-            this.orderId,
             this.bookTitle,
             this.author,
             this.genre,
@@ -111,6 +108,45 @@ export class BookBuilder {
             this.packaging,
             this.price,
             this.quantity
+        );
+    }
+}
+export class IdetifiableBookBuilder {
+    private id!: string;
+    private Book!: Book;
+
+    static newBuilder(): IdetifiableBookBuilder {
+        return new IdetifiableBookBuilder();
+    }
+    setId(id: string): IdetifiableBookBuilder {
+        this.id = id;
+        return this;
+    }
+    setBook(book: Book): IdetifiableBookBuilder {
+        this.Book = book;
+        return this;
+    }
+    build(): IdetifiableBook {
+        if (!this.id) {
+            logger.error("Missing required property: id");
+            throw new Error("Missing required property: id");
+        }
+        if (!this.Book) {
+            logger.error("Missing required property: Book");
+            throw new Error("Missing required property: Book");
+        }
+        return new IdetifiableBook(
+            this.id,
+            this.Book.getBookTitle(),
+            this.Book.getAuthor(),
+            this.Book.getGenre(),
+            this.Book.getFormat(),
+            this.Book.getLanguage(),
+            this.Book.getPublisher(),
+            this.Book.getSpecialEdition(),
+            this.Book.getPackaging(),
+            this.Book.getPrice(),
+            this.Book.getQuantity()
         );
     }
 }

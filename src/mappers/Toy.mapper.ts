@@ -1,11 +1,10 @@
-import { ToyBuilder } from "../Model/builders/toy.builder";
-import Toy from "../Model/Toy.Model";
+import { IdentifiableToyBuilder, ToyBuilder } from "../Model/builders/toy.builder";
+import Toy, { AgeGroup, BatteryRequired, Brand, Educational, IdetifiableToy, Material, ToyType } from "../Model/Toy.Model";
 import { IMapper } from "./IMapper";
 
 export class CSVToyMapper implements IMapper<string[], Toy> {
     map(input: string[]): Toy {
         return new ToyBuilder()
-            .setOrderId(input[0])
             .setToyType(input[1] as any)
             .setAgeGroup(input[2] as any)
             .setBrand(input[3] as any)
@@ -18,7 +17,6 @@ export class CSVToyMapper implements IMapper<string[], Toy> {
     }
         reverseMap(input: Toy): string[] {
         return [
-            input.getOrderId(),
             input.getToyType(),
             input.getAgeGroup(),
             input.getBrand(),
@@ -39,7 +37,6 @@ function getXmlValue(input: any, key: string): string {
 export class JSONToyMapper implements IMapper<any, Toy> {
     map(input: any): Toy {
         return new ToyBuilder()
-            .setOrderId(input["OrderID"])
             .setToyType(input["Type"] as any)
             .setAgeGroup(input["AgeGroup"] as any)
             .setBrand(input["Brand"] as any)
@@ -52,7 +49,6 @@ export class JSONToyMapper implements IMapper<any, Toy> {
     }
     reverseMap(input: Toy): string[] {
         return [
-            input.getOrderId(),
             input.getToyType(),
             input.getAgeGroup(),
             input.getBrand(),
@@ -68,7 +64,6 @@ export class JSONToyMapper implements IMapper<any, Toy> {
 export class XMLToyMapper implements IMapper<any, Toy> {
     map(input: any): Toy {
         return new ToyBuilder()
-            .setOrderId(getXmlValue(input, "OrderID"))
             .setToyType(getXmlValue(input, "Type") as any)
             .setAgeGroup(getXmlValue(input, "AgeGroup") as any)
             .setBrand(getXmlValue(input, "Brand") as any)
@@ -81,7 +76,6 @@ export class XMLToyMapper implements IMapper<any, Toy> {
     }
     reverseMap(input: Toy): string[] {
         return [
-            input.getOrderId(),
             input.getToyType(),
             input.getAgeGroup(),
             input.getBrand(),
@@ -94,3 +88,46 @@ export class XMLToyMapper implements IMapper<any, Toy> {
     }
 
 }
+
+export interface SQLiteToy {
+    id: string;
+    toyType: ToyType;
+    ageGroup: AgeGroup;
+    brand: Brand;
+    material: Material;
+    batteryRequired: BatteryRequired;
+    educational: Educational;
+    price: number;
+    quantity: number;
+}
+
+export class SQLiteToyMapper implements IMapper<SQLiteToy, IdetifiableToy> {
+    map(input: SQLiteToy): IdetifiableToy {
+        return IdentifiableToyBuilder.newBuilder()
+            .setID(input.id)
+            .setToy(ToyBuilder.newBuilder()
+                .setToyType(input.toyType)
+                .setAgeGroup(input.ageGroup)
+                .setBrand(input.brand)
+                .setMaterial(input.material)
+                .setBatteryRequired(input.batteryRequired)
+                .setEducational(input.educational)
+                .setPrice(input.price)
+                .setQuantity(input.quantity)
+                .build())
+            .build();
+    }
+    reverseMap(input: IdetifiableToy): SQLiteToy {
+        return {
+            id: input.getID(),
+            toyType: input.getToyType(),
+            ageGroup: input.getAgeGroup(),
+            brand: input.getBrand(),
+            material: input.getMaterial(),
+            batteryRequired: input.getBatteryRequired(),
+            educational: input.getEducational(),
+            price: input.getPrice(),
+            quantity: input.getQuantity()
+        }
+    }
+}   

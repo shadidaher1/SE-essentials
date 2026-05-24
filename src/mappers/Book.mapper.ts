@@ -1,11 +1,20 @@
-import { BookBuilder } from "../Model/builders/book.builder";
-import Book from "../Model/Book.Model";
+import { BookBuilder, IdetifiableBookBuilder } from "../Model/builders/book.builder";
+import Book, { IdetifiableBook } from "../Model/Book.Model";
 import { IMapper } from "./IMapper";
+import {
+    Genre,
+    Format,
+    Language,
+    Publisher,
+    SpecialEdition,
+    Packaging
+} from "../Model/Book.Model";
+
+
 
 export class CSVBookMapper implements IMapper<string[], Book> {
     map(input: string[]): Book {
         return new BookBuilder()
-            .setOrderId(input[0])
             .setBookTitle(input[1])
             .setAuthor(input[2])
             .setGenre(input[3] as any)
@@ -20,7 +29,6 @@ export class CSVBookMapper implements IMapper<string[], Book> {
     }
     reverseMap(input: Book): string[] {
         return [
-            input.getOrderId(),
             input.getBookTitle(),
             input.getAuthor(),
             input.getGenre(),
@@ -43,7 +51,6 @@ function getXmlValue(input: any, key: string): string {
 export class JSONBookMapper implements IMapper<any, Book> {
     map(input: any): Book {
         return new BookBuilder()
-            .setOrderId(input["Order ID"])
             .setBookTitle(input["Book Title"])
             .setAuthor(input["Author"])
             .setGenre(input["Genre"] as any)
@@ -58,7 +65,6 @@ export class JSONBookMapper implements IMapper<any, Book> {
     }
     reverseMap(input: Book): string[] {
         return [
-            input.getOrderId(),
             input.getBookTitle(),
             input.getAuthor(),
             input.getGenre(),
@@ -76,7 +82,6 @@ export class JSONBookMapper implements IMapper<any, Book> {
 export class XMLBookMapper implements IMapper<any, Book> {
     map(input: any): Book {
         return new BookBuilder()
-            .setOrderId(getXmlValue(input, "OrderID"))
             .setBookTitle(getXmlValue(input, "Book Title"))
             .setAuthor(getXmlValue(input, "Author"))
             .setGenre(getXmlValue(input, "Genre") as any)
@@ -91,7 +96,6 @@ export class XMLBookMapper implements IMapper<any, Book> {
     }
         reverseMap(input: Book): string[] { 
         return [
-            input.getOrderId(),
             input.getBookTitle(),
             input.getAuthor(),
             input.getGenre(),
@@ -103,5 +107,55 @@ export class XMLBookMapper implements IMapper<any, Book> {
             String(input.getPrice()),
             String(input.getQuantity())
         ]
+    }
+}
+
+
+export interface SQLiteBook {
+    id: string;
+    bookTitle: string;
+    author: string;
+    genre: Genre;
+    format: Format;
+    language: Language;
+    publisher: Publisher;
+    specialEdition: SpecialEdition;
+    packaging: Packaging;
+    price: number;
+    quantity: number;
+}
+
+export class SQLiteBookMapper implements IMapper<SQLiteBook, IdetifiableBook> {
+    map(input: SQLiteBook): IdetifiableBook {
+        return IdetifiableBookBuilder.newBuilder()
+           .setBook(BookBuilder.newBuilder()
+                .setBookTitle(input.bookTitle)
+                .setAuthor(input.author)
+                .setGenre(input.genre)
+                .setFormat(input.format)
+                .setLanguage(input.language )
+                .setPublisher(input.publisher)
+                .setSpecialEdition(input.specialEdition)
+                .setPackaging(input.packaging)
+                .setPrice(input.price)
+                .setQuantity(input.quantity)
+                .build())
+            .setId(input.id)
+            .build();
+    }
+    reverseMap(input: IdetifiableBook): SQLiteBook {
+        return {
+            id: input.getID(),
+            bookTitle: input.getBookTitle(),
+            author: input.getAuthor(),
+            genre: input.getGenre(),
+            format: input.getFormat(),
+            language: input.getLanguage(),
+            publisher: input.getPublisher(),
+            specialEdition: input.getSpecialEdition(),
+            packaging: input.getPackaging(),
+            price: input.getPrice(),
+            quantity: input.getQuantity()
+        }
     }
 }
