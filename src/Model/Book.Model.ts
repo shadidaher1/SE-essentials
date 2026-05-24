@@ -1,4 +1,5 @@
-import { IItem, ItemCategory } from "./IItem";
+import { id } from "../repository/IRepository";
+import { IIdentifiableItem, IItem, ItemCategory } from "./IItem";
 
 export type Genre = "Science Fiction" | "Thriller" | "Biography" | "Mystery" | "Fantasy" | "Romance" | "Historical Fiction" | "Non-Fiction";
 export type Format = "Paperback" | "Hardcover" | "Audiobook" | "E-Book";
@@ -8,7 +9,6 @@ export type SpecialEdition = "Signed Copy" | "Limited Edition" | "None" | "Colle
 export type Packaging = "Eco-Friendly Packaging" | "Standard Wrap" | "Luxury Box" | "Gift Wrap";
 
 class Book implements IItem {
-    private orderId: string;
     private bookTitle: string;
     private author: string;
     private genre: Genre;
@@ -21,7 +21,6 @@ class Book implements IItem {
     private quantity: number;
 
     constructor(
-        orderId: string,
         bookTitle: string,
         author: string,
         genre: Genre,
@@ -33,7 +32,6 @@ class Book implements IItem {
         price: number,
         quantity: number
     ) {
-        this.orderId = orderId;
         this.bookTitle = bookTitle;
         this.author = author;
         this.genre = genre;
@@ -50,9 +48,6 @@ class Book implements IItem {
         return ItemCategory.BOOK;
     }
 
-    getOrderId(): string {
-        return this.orderId;
-    }
 
     getBookTitle(): string {
         return this.bookTitle;
@@ -92,6 +87,31 @@ class Book implements IItem {
 
     getQuantity(): number {
         return this.quantity;
+    }
+}
+
+export class IdetifiableBook extends Book implements IIdentifiableItem {
+    private id: string;
+
+    constructor(
+        id: string,
+        bookTitle: string,
+        author: string,
+        genre: Genre,
+        format: Format,
+        language: Language,
+        publisher: Publisher,
+        specialEdition: SpecialEdition,
+        packaging: Packaging,
+        price: number,
+        quantity: number
+    ) {
+        super(bookTitle, author, genre, format, language, publisher, specialEdition, packaging, price, quantity);
+        this.id = id;
+    }
+    getID(): id {
+        return this.id;
+
     }
 }
 
