@@ -18,6 +18,7 @@ import { PGToyRepository } from './repository/postgres/Toy.postgres.repository';
 import { PGOrderRepository } from './repository/postgres/Order.postgres.repository';
 import { DBMode, RepositoryFactory } from "./repository/Repository.factory";
 import { ItemCategory } from "./Model/IItem";
+import { MapperFactory, MapperMode } from "./mappers/Mapper.factory";
 
 
 
@@ -99,10 +100,12 @@ async function DBSandbox() {
   // console.log((await dbOrder.getAll()).length);
   // test Toy and Book repositories similarly
 
+
   // ==================== CAKE ====================
   console.log("\n===== CAKE CRUD =====");
   const dbOrder = await RepositoryFactory.create(DBMode.SQLITE, ItemCategory.CAKE);
 
+  const cakeMapper = MapperFactory.create(MapperMode.CSV, ItemCategory.CAKE);
   const cake = new CakeBuilder()
     .setCakeType("Chocolate")
     .setFlavor("Vanilla")
@@ -140,9 +143,8 @@ async function DBSandbox() {
 
   // ==================== BOOK ====================
   console.log("\n===== BOOK CRUD =====");
-  const bookRepo = new BookRepository();
-  await bookRepo.init();
-
+  const bookRepo = await RepositoryFactory.createItemRepository(DBMode.SQLITE, ItemCategory.BOOK);
+  const bookMapper = MapperFactory.create(MapperMode.SQLITE, ItemCategory.BOOK);
 
   const book = new BookBuilder()
     .setBookTitle("Clean Code")
@@ -158,10 +160,7 @@ async function DBSandbox() {
     .build();
 
   const bookId = Math.random().toString(36).substring(2, 15);
-  const identifiableBook = new IdetifiableBookBuilder()
-    .setId(bookId)
-    .setBook(book)
-    .build();
+  const identifiableBook = new IdetifiableBookBuilder().setId(bookId).setBook(book).build();
 
   await bookRepo.create(identifiableBook);
   console.log("Book CREATE ✅");
@@ -177,8 +176,8 @@ async function DBSandbox() {
 
   // ==================== TOY ====================
   console.log("\n===== TOY CRUD =====");
-  const toyRepo = new ToyRepository();
-  await toyRepo.init();
+  const toyRepo = await RepositoryFactory.createItemRepository(DBMode.SQLITE, ItemCategory.TOY);
+  const toyMapper = MapperFactory.create(MapperMode.SQLITE, ItemCategory.TOY);
 
   const toy = new ToyBuilder()
     .setToyType("Action Figure")
@@ -192,8 +191,8 @@ async function DBSandbox() {
     .build();
 
   const toyId = Math.random().toString(36).substring(2, 15);
-  const identifiableToy = new IdentifiableToyBuilder()  // ✅ correct name
-    .setID(toyId)                                        // ✅ setID not setId
+  const identifiableToy = new IdentifiableToyBuilder()
+    .setID(toyId)
     .setToy(toy)
     .build();
 
@@ -207,16 +206,13 @@ async function DBSandbox() {
   await toyRepo.delete(toyId);
   console.log("Toy DELETE ✅");
   console.log("Toy count after delete:", (await toyRepo.getAll()).length);
-
-
-  
 }
+
 async function PGSandbox() {
 
   // ==================== CAKE ====================
   console.log("\n===== PG CAKE CRUD =====");
-  const pgCakeOrder = new PGOrderRepository(new PGCakeRepository());
-  await pgCakeOrder.init();
+  const pgCakeOrder = await RepositoryFactory.create(DBMode.POSTGRES, ItemCategory.CAKE);
 
   const cake = new CakeBuilder()
     .setCakeType("Chocolate")
@@ -254,8 +250,7 @@ async function PGSandbox() {
 
   // ==================== BOOK ====================
   console.log("\n===== PG BOOK CRUD =====");
-  const pgBookRepo = new PGBookRepository();
-  await pgBookRepo.init();
+  const pgBookRepo = await RepositoryFactory.createItemRepository(DBMode.POSTGRES, ItemCategory.BOOK);
 
   const book = new BookBuilder()
     .setBookTitle("Clean Code")
@@ -286,8 +281,7 @@ async function PGSandbox() {
 
   // ==================== TOY ====================
   console.log("\n===== PG TOY CRUD =====");
-  const pgToyRepo = new PGToyRepository();
-  await pgToyRepo.init();
+  const pgToyRepo = await RepositoryFactory.createItemRepository(DBMode.POSTGRES, ItemCategory.TOY);
 
   const toy = new ToyBuilder()
     .setToyType("Action Figure")
@@ -314,8 +308,7 @@ async function PGSandbox() {
   console.log("PG Toy DELETE ✅");
   console.log("PG Toy count after delete:", (await pgToyRepo.getAll()).length);
 }
-
-PGSandbox();
+// PGSandbox();
 
 // main();
-// DBSandbox();
+DBSandbox();
