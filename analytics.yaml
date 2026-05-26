@@ -1,0 +1,257 @@
+openapi: 3.0.0
+info:
+  title: Analytics API
+  description: Business intelligence endpoints for the e-commerce platform. Provides insights on order counts, revenue, and item performance across all item categories (cake, book, toy).
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+
+  /analytics/orders/count:
+    get:
+      summary: Get total number of orders
+      description: Returns the total count of all orders ever created across all item types.
+      responses:
+        '200':
+          description: Total order count retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotalOrderCount'
+              example:
+                totalOrders: 342
+        '500':
+          description: Internal server error
+
+  /analytics/orders/count-by-type:
+    get:
+      summary: Get order count grouped by item type
+      description: Returns the number of orders placed for each item category (cake, book, toy).
+      responses:
+        '200':
+          description: Order counts per item type retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCountByType'
+              example:
+                cake: 150
+                book: 120
+                toy: 72
+        '500':
+          description: Internal server error
+
+  /analytics/revenue/total:
+    get:
+      summary: Get total revenue from all orders
+      description: Returns the sum of (price × quantity) across all orders and all item types.
+      responses:
+        '200':
+          description: Total revenue retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotalRevenue'
+              example:
+                totalRevenue: 28450.75
+                currency: USD
+        '500':
+          description: Internal server error
+
+  /analytics/revenue/by-type:
+    get:
+      summary: Get revenue breakdown by item type
+      description: Returns the total revenue generated per item category (cake, book, toy).
+      responses:
+        '200':
+          description: Revenue breakdown retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueByType'
+              example:
+                cake: 12000.00
+                book: 9500.50
+                toy: 6950.25
+                currency: USD
+        '500':
+          description: Internal server error
+
+  /analytics/orders/top-items:
+    get:
+      summary: Get top selling items by quantity
+      description: Returns the top N best-selling items ranked by total quantity ordered. Useful for identifying the most popular products.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Number of top items to return (default is 5)
+          schema:
+            type: integer
+            default: 5
+            minimum: 1
+            maximum: 50
+      responses:
+        '200':
+          description: Top items retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopItemsList'
+              example:
+                items:
+                  - itemId: "abc123"
+                    category: cake
+                    totalQuantitySold: 95
+                  - itemId: "xyz789"
+                    category: book
+                    totalQuantitySold: 80
+                  - itemId: "def456"
+                    category: toy
+                    totalQuantitySold: 60
+        '400':
+          description: Invalid limit parameter
+        '500':
+          description: Internal server error
+
+  /analytics/revenue/average-order-value:
+    get:
+      summary: Get average order value
+      description: Returns the average value (price × quantity) per order. Can be filtered by item type to compare across categories.
+      parameters:
+        - name: category
+          in: query
+          required: false
+          description: Filter by item category. If omitted, calculates across all orders.
+          schema:
+            $ref: '#/components/schemas/ItemCategory'
+      responses:
+        '200':
+          description: Average order value retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AverageOrderValue'
+              example:
+                category: cake
+                averageOrderValue: 83.25
+                currency: USD
+                totalOrdersAnalyzed: 150
+        '400':
+          description: Invalid category parameter
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+
+    ItemCategory:
+      type: string
+      enum:
+        - cake
+        - book
+        - toy
+      description: The category of an item in the system
+
+    TotalOrderCount:
+      type: object
+      properties:
+        totalOrders:
+          type: integer
+          description: Total number of orders across all item types
+          example: 342
+
+    OrderCountByType:
+      type: object
+      properties:
+        cake:
+          type: integer
+          description: Number of cake orders
+          example: 150
+        book:
+          type: integer
+          description: Number of book orders
+          example: 120
+        toy:
+          type: integer
+          description: Number of toy orders
+          example: 72
+
+    TotalRevenue:
+      type: object
+      properties:
+        totalRevenue:
+          type: number
+          format: float
+          description: Sum of price × quantity across all orders
+          example: 28450.75
+        currency:
+          type: string
+          example: USD
+
+    RevenueByType:
+      type: object
+      properties:
+        cake:
+          type: number
+          format: float
+          description: Total revenue from cake orders
+          example: 12000.00
+        book:
+          type: number
+          format: float
+          description: Total revenue from book orders
+          example: 9500.50
+        toy:
+          type: number
+          format: float
+          description: Total revenue from toy orders
+          example: 6950.25
+        currency:
+          type: string
+          example: USD
+
+    TopItemEntry:
+      type: object
+      properties:
+        itemId:
+          type: string
+          description: The unique ID of the item
+          example: "abc123"
+        category:
+          $ref: '#/components/schemas/ItemCategory'
+        totalQuantitySold:
+          type: integer
+          description: Total quantity sold across all orders
+          example: 95
+
+    TopItemsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopItemEntry'
+
+    AverageOrderValue:
+      type: object
+      properties:
+        category:
+          description: The filtered category, or "all" if no filter was applied
+          oneOf:
+            - $ref: '#/components/schemas/ItemCategory'
+            - type: string
+              enum: [all]
+        averageOrderValue:
+          type: number
+          format: float
+          description: Average value per order (price × quantity)
+          example: 83.25
+        currency:
+          type: string
+          example: USD
+        totalOrdersAnalyzed:
+          type: integer
+          description: Number of orders used to compute the average
+          example: 150
