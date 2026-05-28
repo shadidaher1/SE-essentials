@@ -1,6 +1,7 @@
 import { config } from "dotenv"
 import path from "path"
 import { json } from "stream/consumers"
+import { DBMode } from "../repository/Repository.factory"
 
 config({ path: path.join(__dirname, '../../.env') })
 
@@ -17,7 +18,11 @@ export default {
         },
         xml: {
             toy: "src/data/toy orders.xml"
-        }
+        },
+     
  
-    }
+    },
+    port: process.env.PORT ? parseInt(process.env.PORT ) : 3000,
+    host: process.env.HOST || '127.0.0.1',
+    dbMode : DBMode.SQLITE
 }

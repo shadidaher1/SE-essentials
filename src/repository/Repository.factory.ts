@@ -1,4 +1,4 @@
-import { IOrder } from "../Model/IOrder";
+import { IIdentifiableOrderItem, IOrder } from "../Model/IOrder";
 import { IInitializable, IRepository } from "./IRepository";
 import { ItemCategory } from "../Model/IItem";
 import { CakeOrderRepository } from "./file/CakeOrder.repository";
@@ -19,11 +19,11 @@ export enum DBMode {
 }
 
 export class RepositoryFactory {
-    public static async create(mode: DBMode, category: ItemCategory): Promise<IRepository<IOrder>> {
+    public static async create(mode: DBMode, category: ItemCategory): Promise<IRepository<IIdentifiableOrderItem>> {
         switch (mode) {
 
             case DBMode.SQLITE: {
-                let repository: IRepository<IOrder> & IInitializable;
+                let repository: IRepository<IIdentifiableOrderItem> & IInitializable;
                 switch (category) {
                     case ItemCategory.CAKE:
                         repository = new OrderRepository(new CakeRepository());
@@ -42,7 +42,7 @@ export class RepositoryFactory {
             }
 
             case DBMode.POSTGRES: {
-                let repository: IRepository<IOrder> & IInitializable;
+                let repository: IRepository<IIdentifiableOrderItem> & IInitializable;
                 switch (category) {
                     case ItemCategory.CAKE:
                         repository = new PGOrderRepository(new PGCakeRepository());
@@ -59,18 +59,18 @@ export class RepositoryFactory {
                 await repository.init();
                 return repository;
             }
-
-            case DBMode.FILE:
-                switch (category) {
-                    case ItemCategory.CAKE:
-                        return new CakeOrderRepository(config.storagePath.csv.cake);
-                    case ItemCategory.BOOK:
-                        return new CakeOrderRepository(config.storagePath.json.book);
-                    case ItemCategory.TOY:
-                        return new CakeOrderRepository(config.storagePath.xml.toy);
-                    default:
-                        throw new Error(`Unsupported category ${category}`);
-                }
+            // Depricated file storage, not fully implemented
+            // case DBMode.FILE:
+            //     switch (category) {
+            //         case ItemCategory.CAKE:
+            //             return new CakeOrderRepository(config.storagePath.csv.cake);
+            //         case ItemCategory.BOOK:
+            //             return new CakeOrderRepository(config.storagePath.json.book);
+            //         case ItemCategory.TOY:
+            //             return new CakeOrderRepository(config.storagePath.xml.toy);
+            //         default:
+            //             throw new Error(`Unsupported category ${category}`);
+                // }
 
             default:
                 throw new Error(`Unsupported DB mode ${mode}`);
