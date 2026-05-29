@@ -1,7 +1,7 @@
 import { config } from "dotenv"
 import path from "path"
 import { json } from "stream/consumers"
-import { DBMode } from "../repository/Repository.factory"
+import { DBMode } from "../repository/DBMode"
 
 config({ path: path.join(__dirname, '../../.env') })
 
@@ -24,5 +24,5 @@ export default {
     },
     port: process.env.PORT ? parseInt(process.env.PORT ) : 3000,
     host: process.env.HOST || '127.0.0.1',
-    dbMode : DBMode.SQLITE
+    dbMode : DBMode.SQLITE,
 }

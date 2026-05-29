@@ -7,9 +7,29 @@ import cors from 'cors';
 import requestLogger from './middleware/requestLogger';
 import routes from './routes';
 import { ApiException } from './util/exceptions/ApiException';
+import { AnalyticsService } from './services/Analytics.service';
 import e from 'express';
 
 const app = express();
+const analyticsService = new AnalyticsService();
+
+const runAnalytics = async (): Promise<void> => {
+  try {
+    const totalOrders = await analyticsService.getTotalOrderCount();
+    const orderCounts = await analyticsService.getOrderCountByType();
+    const totalRevenue = await analyticsService.getTotalRevenue();
+    const revenueByType = await analyticsService.getRevenueByType();
+
+    logger.info('Analytics results: totalOrders=%d orderCounts=%o totalRevenue=%f revenueByType=%o',
+      totalOrders,
+      orderCounts,
+      totalRevenue,
+      revenueByType
+    );
+  } catch (error) {
+    logger.error('Analytics execution failed: %s', (error as Error).message);
+  }
+};
 
 // config helmet
 app.use(helmet());
@@ -49,5 +69,6 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 
 app.listen(config.port, config.host, () => {
   logger.info(`Server is running on http://${config.host}:${config.port}`);
+  void runAnalytics();
 });
 
