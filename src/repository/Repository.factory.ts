@@ -10,13 +10,10 @@ import { PGOrderRepository } from "./postgres/Order.postgres.repository";
 import { PGCakeRepository } from "./postgres/Cake.postgres.repository";
 import { PGBookRepository } from "./postgres/Book.postgres.repository";
 import { PGToyRepository } from "./postgres/Toy.postgres.repository";
-import config from "../config";
 
-export enum DBMode {
-    SQLITE = "sqlite",
-    FILE = "file",
-    POSTGRES = "postgres"
-}
+import { DBMode } from "./DBMode";
+
+export { DBMode } from "./DBMode";
 
 export class RepositoryFactory {
     public static async create(mode: DBMode, category: ItemCategory): Promise<IRepository<IIdentifiableOrderItem>> {
