@@ -94,3 +94,27 @@ export class SQLiteOrderMapper implements IMapper<{data:SQLiteOrder, item: IIden
     }
 
 }
+
+
+
+export class JsonRequestOrderMapper implements IMapper<any, IIdentifiableOrderItem> {
+ 
+    constructor(private itemMapper: IMapper<any, IIdentifiableItem>) {}           
+ 
+    map(input: any): IIdentifiableOrderItem {
+        const item = this.itemMapper.map(input);
+       const order = OrderBuilder.newBuilder().setItem(item)
+       .setPrice(input.price)
+       .setId(input.id)
+       .setQuantity(input.quantity)
+       .build();
+       return IdentifiableOrderItemBuilder.newBuilder().setOrder(order).setIdentifiableItem(item).build();
+    }
+    reverseMap(input: IIdentifiableOrderItem) {
+        const itemData = this.itemMapper.reverseMap(input.getItem());
+        return {
+            category: input.getItem().getCategory(),
+            ...input
+    }
+}
+}

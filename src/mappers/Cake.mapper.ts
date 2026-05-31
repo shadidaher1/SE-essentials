@@ -197,8 +197,25 @@ export class SQLiteCakeMapper implements IMapper<SQLiteCake, IdetifiableCake> {
         allergies: input.getAllergies(),
         specialIngredients: input.getSpecialIngredients(),
         packagingType: input.getPackagingType()
-       }
+       };
 
     }
-
 }
+
+export class JsonCakeRequestMapper implements IMapper<any, IdetifiableCake> {
+        constructor(private cakeMapper: IMapper<any, Cake>) {}
+
+        map(input: any): IdetifiableCake {
+            const cake = this.cakeMapper.map(input);
+            return IdetifiableCakeBuilder.newBuilder().setCake(cake).setId(input.id).build();
+        }
+
+        reverseMap(input: IdetifiableCake) {
+            const cakeData = this.cakeMapper.reverseMap(input as unknown as Cake);
+            return {
+                id: input.getID && input.getID(),
+                data: cakeData,
+            };
+        }
+    }
+

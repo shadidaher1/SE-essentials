@@ -159,3 +159,20 @@ export class SQLiteBookMapper implements IMapper<SQLiteBook, IdetifiableBook> {
         }
     }
 }
+
+export class JsonBookRequestMapper implements IMapper<any, IdetifiableBook> {
+    constructor(private bookMapper: IMapper<any, Book>) {}
+
+    map(input: any): IdetifiableBook {
+        const book = this.bookMapper.map(input);
+        return IdetifiableBookBuilder.newBuilder().setBook(book).setId(input.id).build();
+    }
+
+    reverseMap(input: IdetifiableBook) {
+        const bookData = this.bookMapper.reverseMap(input as unknown as Book);
+        return {
+            id: input.getID && input.getID(),
+            data: bookData,
+        };
+    }
+}

@@ -10,12 +10,12 @@ import { SQLiteOrder, SQLiteOrderMapper } from "../../mappers/Order.mapper";
 const CREATE_TABLE_QUERY = `CREATE TABLE IF NOT EXISTS "orders" (
     id TEXT PRIMARY KEY,
     quantity INTEGER NOT NULL,
-    price INTEGER NOT NULL,
+    price REAL NOT NULL,
     item_category TEXT NOT NULL,
     item_id TEXT NOT NULL
 )`;
-const INSERT_ORDER_QUERY = `INSERT OR REPLACE INTO "orders" (id, quantity, price, item_category, item_id) VALUES (?, ?, ?, ?, ?)`;
-const INSERT_ORDER_LEGACY_QUERY = `INSERT OR REPLACE INTO "orders" (id, quantity, price, item_category, item_id, customer_name, cake_type, order_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+const INSERT_ORDER_QUERY = `INSERT INTO "orders" (id, quantity, price, item_category, item_id) VALUES (?, ?, ?, ?, ?)`;
+const INSERT_ORDER_LEGACY_QUERY = `INSERT INTO "orders" (id, quantity, price, item_category, item_id, customer_name, cake_type, order_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 const SELECT_ORDER_QUERY = `SELECT id, quantity, price, item_category, item_id FROM "orders" WHERE id = ?`;
 
 const SELECT_ALL_ORDERS_QUERY = `SELECT * FROM "orders" WHERE item_category = ? `;
@@ -154,7 +154,8 @@ export class OrderRepository implements IRepository<IIdentifiableOrderItem>, IIn
         try {
         const conn = await ConnectionManager.getInstance().getConnection();
             await conn.exec("BEGIN TRANSACTION");
-           await this.itemRepository.delete(id);
+            const itemID = (await this.get((id))).getItem().getID();
+           await this.itemRepository.delete(itemID);
            await conn.run(DELETE_ID, [id]);
             await conn.exec("COMMIT");
         }

@@ -130,4 +130,21 @@ export class SQLiteToyMapper implements IMapper<SQLiteToy, IdetifiableToy> {
             quantity: input.getQuantity()
         }
     }
+}
+
+export class JsonToyRequestMapper implements IMapper<any, IdetifiableToy> {
+    constructor(private toyMapper: IMapper<any, Toy>) {}
+
+    map(input: any): IdetifiableToy {
+        const toy = this.toyMapper.map(input);
+        return IdentifiableToyBuilder.newBuilder().setID(input.id).setToy(toy).build();
+    }
+
+    reverseMap(input: IdetifiableToy) {
+        const toyData = this.toyMapper.reverseMap(input as unknown as Toy);
+        return {
+            id: input.getID && input.getID(),
+            data: toyData,
+        };
+    }
 }   
