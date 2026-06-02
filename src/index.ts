@@ -10,6 +10,8 @@ import { AnalyticsService } from './services/Analytics.service';
 import e from 'express';
 import { HttpException } from './util/exceptions/http/HttpException';
 import { Http } from 'winston/lib/winston/transports';
+import cookieParser from 'cookie-parser';
+
 
 const app = express();
 // const analyticsService = new AnalyticsService();
@@ -43,8 +45,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
+
 // add middleware
 app.use(requestLogger);
+
+//cookie parser
+app.use(cookieParser());
+
 
 //  config routes
 app.use('/',routes);

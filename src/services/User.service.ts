@@ -5,6 +5,7 @@ import { ServiceException } from "../util/exceptions/ServiceException";
 import { NotFoundException } from "../util/exceptions/http/NotFoundException";
 import { BadRequestException } from "../util/exceptions/http/BadRequestException";
 import logger from "../util/logger";
+import { id } from "../repository/IRepository";
 
 export interface CreateUserDTO {
     name: string;
@@ -238,4 +239,28 @@ export class UserService {
             });
         }
     }
+    async validateUser(email: string, password: string): Promise<id> {
+        try {
+            const user = await this.getUserByEmail(email);
+            if (!user) {
+                throw new NotFoundException("User not found", {
+                    userNotFound: true
+                });
+            }
+            if (user.getPassword() !== password) {
+                throw new BadRequestException("Invalid email or password", {
+                    invalidCredentials: true
+                });
+            }
+            return user.getID();
+        }
+        catch (error: unknown) {
+            if (error instanceof NotFoundException || error instanceof BadRequestException) {
+                throw error;
+            }
+            logger.error(`Failed to validate user with email ${email}`, error as Error);
+            throw new ServiceException("Failed to validate user");
+        }
+    
+}
 }
