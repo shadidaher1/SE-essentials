@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthenticationException, MissingTokenException } from '../util/exceptions/http/AuthenticationException';
+import { AuthenticationException } from '../util/exceptions/http/AuthenticationException';
 import { AuthenticationService } from '../services/Authentication.service';
 import { AuthenticatedRequest } from '../config/types';
 

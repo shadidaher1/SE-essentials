@@ -1,10 +1,6 @@
-import { Order } from "../Model/Order.Model";
 import { RepositoryFactory } from "../repository/Repository.factory";
-import { generateUUID } from "../util";
-import { ServiceException } from "../util/exceptions/ServiceException";
-import {v4 as uuidv4} from 'uuid';
 import config from "../config";
-import { IIdentifiableItem, ItemCategory } from "../Model/IItem";
+import { ItemCategory } from "../Model/IItem";
 import { IIdentifiableOrderItem } from "../Model/IOrder";
 import { IRepository } from "../repository/IRepository";
 import { NotFoundException } from "../util/exceptions/http/NotFoundException";
@@ -39,7 +35,7 @@ export class orderManagementService {
                 const order = await repo.get(id);
                 return order;
             }
-        catch (error) {
+        catch (_error) {
             //ignore error and try next category
             }
         }
@@ -52,7 +48,7 @@ export class orderManagementService {
         // Check if order exists before updating
         try {
             await repo.get(order.getID());
-        } catch (error) {
+        } catch (_error) {
             throw new NotFoundException(`Order with id ${order.getID()} not found`);
         }
         await repo.update(order);

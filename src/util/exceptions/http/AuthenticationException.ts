@@ -1,5 +1,3 @@
-import e from "express";
-import { Http } from "winston/lib/winston/transports";
 import { HttpException } from "./HttpException";
 
 export class AuthenticationException extends HttpException {

@@ -10,6 +10,9 @@ import { PGBookRepository } from "../../repository/postgres/Book.postgres.reposi
 import { PGToyRepository } from "../../repository/postgres/Toy.postgres.repository";
 import { PGConnectionManager } from "../../util/database/PGConnectionManager";
 
+// Postgres cases need a live DB; skip them when none is configured (e.g. CI).
+const itIfDb = process.env.PG_CONNECTION_STRING ? it : it.skip;
+
 describe("RepositoryFactory", () => {
 
     afterAll(async () => {
@@ -33,17 +36,17 @@ describe("RepositoryFactory", () => {
     });
 
     // ===== POSTGRES =====
-    it("should create PostgreSQL Cake OrderRepository", async () => {
+    itIfDb("should create PostgreSQL Cake OrderRepository", async () => {
         const repo = await RepositoryFactory.create(DBMode.POSTGRES, ItemCategory.CAKE);
         expect(repo).toBeInstanceOf(PGOrderRepository);
     });
 
-    it("should create PostgreSQL Book Repository", async () => {
+    itIfDb("should create PostgreSQL Book Repository", async () => {
         const repo = await RepositoryFactory.createItemRepository(DBMode.POSTGRES, ItemCategory.BOOK);
         expect(repo).toBeInstanceOf(PGBookRepository);
     });
 
-    it("should create PostgreSQL Toy Repository", async () => {
+    itIfDb("should create PostgreSQL Toy Repository", async () => {
         const repo = await RepositoryFactory.createItemRepository(DBMode.POSTGRES, ItemCategory.TOY);
         expect(repo).toBeInstanceOf(PGToyRepository);
     });

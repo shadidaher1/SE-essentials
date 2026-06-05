@@ -25,7 +25,11 @@ const buildCake = (id: string) => {
     return new IdetifiableCakeBuilder().setId(id).setCake(cake).build();
 };
 
-describe("PGCakeRepository", () => {
+// Integration tests: run only when a Postgres connection is configured
+// (present locally via .env, absent in CI — skipped there).
+const describeIfDb = process.env.PG_CONNECTION_STRING ? describe : describe.skip;
+
+describeIfDb("PGCakeRepository", () => {
     let repo: PGCakeRepository;
     const testId = "test-cake-" + Date.now();
 
@@ -36,7 +40,7 @@ describe("PGCakeRepository", () => {
 
     afterAll(async () => {
         // cleanup test data
-        try { await repo.delete(testId); } catch {}
+        try { await repo.delete(testId); } catch { /* ignore cleanup errors */ }
         await PGConnectionManager.getInstance().closeConnection();
     });
 

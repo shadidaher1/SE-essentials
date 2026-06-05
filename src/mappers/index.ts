@@ -4,7 +4,6 @@ import { JSONBookMapper } from "./Book.mapper";
 import { JsonBookRequestMapper } from "./Book.mapper";
 import { JSONToyMapper } from "./Toy.mapper";
 import { JsonToyRequestMapper } from "./Toy.mapper";
-import { IMapper } from "./IMapper";
 import { JsonRequestOrderMapper } from "./Order.mapper";
 import { JSONCakeMapper } from "./Cake.mapper";
 

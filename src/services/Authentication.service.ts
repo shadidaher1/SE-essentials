@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from "../config";
-import { TokenPayload, Userpayload } from '../config/types';
+import { Userpayload } from '../config/types';
 import { AuthenticationException, InvalidTokenException, TokenExpiredException } from '../util/exceptions/http/AuthenticationException';
 import logger from '../util/logger';
 import { ServiceException } from '../util/exceptions/ServiceException';
@@ -42,14 +42,14 @@ export class AuthenticationService {
             throw new ServiceException("Token verification failed");
         }
     }
-    setTokenIntoCookie(res: any, token: string): void {
+    setTokenIntoCookie(res: Response, token: string): void {
         res.cookie('token', token, {
             httpOnly: true,
             secure: !config.isDev,
             maxAge: ms(this.tokenExpiration)
         });
     }
-    setRefreshTokenIntoCookie(res: any, refreshToken: string): void {
+    setRefreshTokenIntoCookie(res: Response, refreshToken: string): void {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: !config.isDev,

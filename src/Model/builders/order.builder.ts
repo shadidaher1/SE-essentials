@@ -1,5 +1,5 @@
 import { IIdentifiableItem, IItem } from "../IItem";
-import { IIdentifiableOrderItem, IOrder } from "../IOrder";
+import { IIdentifiableOrderItem } from "../IOrder";
 import { IdetifiableOrderItem, Order } from "../Order.Model";
 
 export class OrderBuilder {

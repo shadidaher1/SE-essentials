@@ -2,11 +2,7 @@
 
 import { IInitializable, IRepository, id } from "../IRepository";
 import { IdetifiableCake } from "../../Model/Cake.Model";
-import { IItem, IIdentifiableItem, ItemCategory } from "../../Model/IItem";
-import { Database } from "sqlite3";
-import { Database as SQLiteDatabase } from "sqlite";
-import { open } from "sqlite";
-import config from "../../config";
+import { ItemCategory } from "../../Model/IItem";
 import logger from "../../util/logger";
 import { ConnectionManager } from "../../util/database/ConnectionManager";
 import { DbException, InitializationException, ItemNotFoundException } from "../../util/exceptions/repositoryExcpetion";
@@ -126,7 +122,7 @@ export class CakeRepository implements IRepository<IdetifiableCake>, IInitializa
         // Implementation for updating a cake
         try {
             const conn = await ConnectionManager.getInstance().getConnection();
-            const result = await conn.run(UPDATE_ID, [
+            await conn.run(UPDATE_ID, [
                 item.getCakeType(),
                 item.getFlavor(),
                 item.getFilling(),
@@ -151,7 +147,7 @@ export class CakeRepository implements IRepository<IdetifiableCake>, IInitializa
     async delete(id: string): Promise<void> {
         try {
             const conn = await ConnectionManager.getInstance().getConnection();
-            const result = await conn.run(DELETE_ID, id);
+            await conn.run(DELETE_ID, id);
         } catch (error: unknown) {
             logger.error("Failed to delete cake of id %s %o", id, error as Error);
             throw new DbException("Failed to delete cake of id " + id, error as Error);

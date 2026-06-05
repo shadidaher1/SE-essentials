@@ -45,6 +45,7 @@ export class ToyBuilder {
         this.material = material;
         return this;
     }
+    
 
     setBatteryRequired(batteryRequired: BatteryRequired): ToyBuilder {
         this.batteryRequired = batteryRequired;

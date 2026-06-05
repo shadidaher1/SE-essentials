@@ -5,7 +5,6 @@ import { ServiceException } from "../util/exceptions/ServiceException";
 import { NotFoundException } from "../util/exceptions/http/NotFoundException";
 import { BadRequestException } from "../util/exceptions/http/BadRequestException";
 import logger from "../util/logger";
-import { id } from "../repository/IRepository";
 import { ROLE, toRole } from "../config/roles";
 
 export interface CreateUserDTO {

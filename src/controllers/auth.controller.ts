@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { AuthenticationService } from '../services/Authentication.service';
 import { BadRequestException } from '../util/exceptions/http/BadRequestException';
-import { UserRepository } from '../repository/sqlite/User.repository';
 import { UserService } from '../services/User.service';
-import { AuthenticatedRequest, Userpayload } from '../config/types';
+import { Userpayload } from '../config/types';
 import { toRole } from '../config/roles';
 
 export class AuthController {
@@ -30,12 +29,11 @@ export class AuthController {
         res.status(200).json({
             status: 'Login success',
         });
-        } catch (error) {
+        } catch (_error) {
             throw new BadRequestException('Invalid email or password');
         }
     }
     logout(req: Request, res: Response): void {
-        const authReq = req as AuthenticatedRequest;
         this.authService.clear(res);
         res.status(200).json({
             status: 'Logout success',

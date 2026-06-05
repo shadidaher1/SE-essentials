@@ -1,7 +1,6 @@
-import { IIdentifiableOrderItem, IOrder } from "../Model/IOrder";
+import { IIdentifiableOrderItem } from "../Model/IOrder";
 import { IInitializable, IRepository } from "./IRepository";
-import { ItemCategory } from "../Model/IItem";
-import { CakeOrderRepository } from "./file/CakeOrder.repository";
+import { IIdentifiableItem, ItemCategory } from "../Model/IItem";
 import { OrderRepository } from "./sqlite/Order.Repository";
 import { CakeRepository } from "./sqlite/Cake.order.repository";
 import { BookRepository } from "./sqlite/Book.order.repository";
@@ -73,10 +72,10 @@ export class RepositoryFactory {
                 throw new Error(`Unsupported DB mode ${mode}`);
         }
     }
-    public static async createItemRepository(mode: DBMode, category: ItemCategory): Promise<IRepository<any> & IInitializable> {
+    public static async createItemRepository(mode: DBMode, category: ItemCategory): Promise<IRepository<IIdentifiableItem> & IInitializable> {
     switch (mode) {
         case DBMode.SQLITE: {
-            let repository: IRepository<any> & IInitializable;
+            let repository: IRepository<IIdentifiableItem> & IInitializable;
             switch (category) {
                 case ItemCategory.BOOK:
                     repository = new BookRepository();
@@ -91,7 +90,7 @@ export class RepositoryFactory {
             return repository;
         }
         case DBMode.POSTGRES: {
-            let repository: IRepository<any> & IInitializable;
+            let repository: IRepository<IIdentifiableItem> & IInitializable;
             switch (category) {
                 case ItemCategory.BOOK:
                     repository = new PGBookRepository();

@@ -1,9 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { orderManagementService } from "../services/OrderManagment.service";
-import { json } from "stream/consumers";
 import { IIdentifiableOrderItem } from "../Model/IOrder";
 import { JsonRequestFactory } from "../mappers";
-import logger from "../util/logger";
 import { BadRequestException } from "../util/exceptions/http/BadRequestException";
 
 export class OrderController {

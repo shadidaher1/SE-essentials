@@ -22,7 +22,11 @@ const buildBook = (id: string) =>
             .build())
         .build();
 
-describe("PGBookRepository", () => {
+// Integration tests: run only when a Postgres connection is configured
+// (present locally via .env, absent in CI — skipped there).
+const describeIfDb = process.env.PG_CONNECTION_STRING ? describe : describe.skip;
+
+describeIfDb("PGBookRepository", () => {
     let repo: PGBookRepository;
     const testId = "test-book-" + Date.now();
 
@@ -32,7 +36,7 @@ describe("PGBookRepository", () => {
     });
 
     afterAll(async () => {
-        try { await repo.delete(testId); } catch {}
+        try { await repo.delete(testId); } catch { /* ignore cleanup errors */ }
         await PGConnectionManager.getInstance().closeConnection();
     });
 

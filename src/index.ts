@@ -6,10 +6,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import requestLogger from './middleware/requestLogger';
 import routes from './routes';
-import { AnalyticsService } from './services/Analytics.service';
-import e from 'express';
 import { HttpException } from './util/exceptions/http/HttpException';
-import { Http } from 'winston/lib/winston/transports';
 import cookieParser from 'cookie-parser';
 
 
@@ -58,12 +55,12 @@ app.use('/',routes);
 
 
 // config 404 handler
-app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((req: express.Request, res: express.Response) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
 // config error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof HttpException) {
         const httpException = err as HttpException;
         logger.error("%s %s %s", httpException.name, httpException.status, httpException.message);

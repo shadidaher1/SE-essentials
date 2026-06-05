@@ -53,7 +53,7 @@ export class UserRepository implements IRepository<User>, IInitializable {
             // Add role column if it doesn't exist (for existing databases)
             try {
                 await conn.exec(`ALTER TABLE ${tableName} ADD COLUMN role TEXT NOT NULL DEFAULT 'user'`);
-            } catch (alterError) {
+            } catch (_alterError) {
                 // Column might already exist, ignore the error
                 logger.info("Role column already exists or table doesn't exist yet");
             }

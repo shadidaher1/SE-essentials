@@ -1,7 +1,6 @@
 import { IdentifiableOrderItemBuilder, OrderBuilder } from "../Model/builders/order.builder";
 import { IIdentifiableItem, IItem } from "../Model/IItem";
 import { IIdentifiableOrderItem, IOrder } from "../Model/IOrder";
-import { Order } from "../Model/Order.Model";
 import { IMapper } from "./IMapper";
 
 export class CSVOrderMapper implements IMapper<string[], IOrder> {
@@ -111,7 +110,6 @@ export class JsonRequestOrderMapper implements IMapper<any, IIdentifiableOrderIt
        return IdentifiableOrderItemBuilder.newBuilder().setOrder(order).setIdentifiableItem(item).build();
     }
     reverseMap(input: IIdentifiableOrderItem) {
-        const itemData = this.itemMapper.reverseMap(input.getItem());
         return {
             category: input.getItem().getCategory(),
             ...input

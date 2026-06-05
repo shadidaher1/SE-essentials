@@ -20,7 +20,11 @@ const buildToy = (id: string) =>
             .build())
         .build();
 
-describe("PGToyRepository", () => {
+// Integration tests: run only when a Postgres connection is configured
+// (present locally via .env, absent in CI — skipped there).
+const describeIfDb = process.env.PG_CONNECTION_STRING ? describe : describe.skip;
+
+describeIfDb("PGToyRepository", () => {
     let repo: PGToyRepository;
     const testId = "test-toy-" + Date.now();
 
@@ -30,7 +34,7 @@ describe("PGToyRepository", () => {
     });
 
     afterAll(async () => {
-        try { await repo.delete(testId); } catch {}
+        try { await repo.delete(testId); } catch { /* ignore cleanup errors */ }
         await PGConnectionManager.getInstance().closeConnection();
     });
 

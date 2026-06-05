@@ -3,7 +3,6 @@ import { BookBuilder } from "../../Model/builders/book.builder";
 describe("BookBuilder", () => {
   it("builds a Book object with all required fields", () => {
     const book = new BookBuilder()
-      .setOrderId("B001")
       .setBookTitle("The Great Gatsby")
       .setAuthor("F. Scott Fitzgerald")
       .setGenre("Historical Fiction")
@@ -16,7 +15,6 @@ describe("BookBuilder", () => {
       .setQuantity(1)
       .build();
 
-    expect(book.getOrderId()).toBe("B001");
     expect(book.getBookTitle()).toBe("The Great Gatsby");
     expect(book.getPrice()).toBe(15.99);
     expect(book.getQuantity()).toBe(1);
@@ -24,7 +22,6 @@ describe("BookBuilder", () => {
 
   it("throws when a required Book field is missing", () => {
     const bookBuilder = new BookBuilder()
-      .setOrderId("B001")
       .setBookTitle("The Great Gatsby")
       .setAuthor("F. Scott Fitzgerald")
       .setGenre("Historical Fiction")

@@ -1,4 +1,3 @@
-import { log } from "node:console";
 import { SQLiteToy, SQLiteToyMapper } from "../../mappers/Toy.mapper";
 import { ItemCategory } from "../../Model/IItem";
 import { IdetifiableToy } from "../../Model/Toy.Model";

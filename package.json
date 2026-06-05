@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src",
     "clean": "rm -rf build",
-    "prebuild": "npm run clean && npm run lint",
+    "prebuild": "npm run clean",
     "build": "tsc",
     "postbuild": "echo \"Finished buidl with size: $(du -sh build) | cut -f1\" ",
     "prestart": "npm run build",

@@ -1,6 +1,6 @@
-import { CSVCakeMapper, JSONCakeMapper, XMLCakeMapper } from "../../mappers/Cake.mapper";
-import { CSVBookMapper, JSONBookMapper, XMLBookMapper } from "../../mappers/Book.mapper";
-import { CSVToyMapper, JSONToyMapper, XMLToyMapper } from "../../mappers/Toy.mapper";
+import { CSVCakeMapper, XMLCakeMapper } from "../../mappers/Cake.mapper";
+import { JSONBookMapper } from "../../mappers/Book.mapper";
+import { CSVToyMapper, XMLToyMapper } from "../../mappers/Toy.mapper";
 
 describe("Mapper implementations", () => {
   it("maps cake CSV rows into Cake objects", () => {
