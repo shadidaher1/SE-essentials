@@ -20,7 +20,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
             token = newToken;
         }
         const payload = authService.verifyToken(token);
-        (req as AuthenticatedRequest).userId = payload.userId;
+        (req as AuthenticatedRequest).user = payload;
         next();
     } catch (error) {
         next(error);

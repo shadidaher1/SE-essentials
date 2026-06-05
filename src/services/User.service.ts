@@ -6,6 +6,7 @@ import { NotFoundException } from "../util/exceptions/http/NotFoundException";
 import { BadRequestException } from "../util/exceptions/http/BadRequestException";
 import logger from "../util/logger";
 import { id } from "../repository/IRepository";
+import { ROLE, toRole } from "../config/roles";
 
 export interface CreateUserDTO {
     name: string;
@@ -56,7 +57,7 @@ export class UserService {
             }
 
             const userId = generateUUID();
-            const user = new User(userId, userData.name, userData.email, userData.password);
+            const user = new User(userId, userData.name, userData.email, userData.password, toRole(ROLE.user));
             
             await this.userRepository.create(user);
             logger.info(`User created: ${userId}`);
@@ -170,6 +171,7 @@ export class UserService {
                 updateData.name ?? existingUser.getName(),
                 updateData.email ?? existingUser.getEmail(),
                 updateData.password ?? existingUser.getPassword()
+            , toRole(existingUser.getRole())
             );
 
             await this.userRepository.update(updatedUser);
@@ -239,7 +241,7 @@ export class UserService {
             });
         }
     }
-    async validateUser(email: string, password: string): Promise<id> {
+    async validateUser(email: string, password: string): Promise<User> {
         try {
             const user = await this.getUserByEmail(email);
             if (!user) {
@@ -252,7 +254,7 @@ export class UserService {
                     invalidCredentials: true
                 });
             }
-            return user.getID();
+            return user;
         }
         catch (error: unknown) {
             if (error instanceof NotFoundException || error instanceof BadRequestException) {

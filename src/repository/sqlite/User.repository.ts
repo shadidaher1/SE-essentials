@@ -1,3 +1,4 @@
+import { toRole } from "../../config/roles";
 import { User } from "../../Model/User.Model";
 import { ConnectionManager } from "../../util/database/ConnectionManager";
 import { DbException, InitializationException } from "../../util/exceptions/repositoryExcpetion";
@@ -11,6 +12,7 @@ interface UserRow {
     name: string;
     email: string;
     password: string;
+    role: string;
 }
 
 export const CREATE_TABLE = `
@@ -18,13 +20,14 @@ CREATE TABLE IF NOT EXISTS ${tableName} (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'user'
 )`;
 
 export const INSERT = `
 INSERT INTO ${tableName} (
-    id, name, email, password
-) VALUES (?, ?, ?, ?)`;
+    id, name, email, password, role
+) VALUES (?, ?, ?, ?, ?)`;
 
 export const SELECT_BY_ID = `SELECT * FROM ${tableName} WHERE id = ?`;
 
@@ -36,7 +39,8 @@ export const UPDATE = `
 UPDATE ${tableName} SET
     name = ?,
     email = ?,
-    password = ?
+    password = ?,
+    role = ?
 WHERE id = ?`;
 
 export const DELETE = `DELETE FROM ${tableName} WHERE id = ?`;
@@ -46,6 +50,13 @@ export class UserRepository implements IRepository<User>, IInitializable {
         try {
             const conn = await ConnectionManager.getInstance().getConnection();
             await conn.exec(CREATE_TABLE);
+            // Add role column if it doesn't exist (for existing databases)
+            try {
+                await conn.exec(`ALTER TABLE ${tableName} ADD COLUMN role TEXT NOT NULL DEFAULT 'user'`);
+            } catch (alterError) {
+                // Column might already exist, ignore the error
+                logger.info("Role column already exists or table doesn't exist yet");
+            }
             logger.info("User table initialised");
         } catch (error: unknown) {
             logger.error("Failed to initialise user repository", error as Error);
@@ -60,7 +71,8 @@ export class UserRepository implements IRepository<User>, IInitializable {
                 item.getID(),
                 item.getName(),
                 item.getEmail(),
-                item.getPassword()
+                item.getPassword(),
+                item.getRole()
             ]);
             logger.info(`User created with ID: ${item.getID()}`);
             return item.getID();
@@ -80,7 +92,7 @@ export class UserRepository implements IRepository<User>, IInitializable {
             }
 
             const userRow = result as UserRow;
-            return new User(userRow.id, userRow.name, userRow.email, userRow.password);
+            return new User(userRow.id, userRow.name, userRow.email, userRow.password, toRole(userRow.role));
         } catch (error: unknown) {
             logger.error(`Failed to get user with ID ${itemID}`, error as Error);
             throw new DbException(`Failed to get user with ID ${itemID}`, error as Error);
@@ -97,7 +109,7 @@ export class UserRepository implements IRepository<User>, IInitializable {
             }
 
             const userRow = result as UserRow;
-            return new User(userRow.id, userRow.name, userRow.email, userRow.password);
+            return new User(userRow.id, userRow.name, userRow.email, userRow.password, toRole(userRow.role));
         } catch (error: unknown) {
             logger.error(`Failed to get user with email ${email}`, error as Error);
             throw new DbException(`Failed to get user with email ${email}`, error as Error);
@@ -109,7 +121,7 @@ export class UserRepository implements IRepository<User>, IInitializable {
             const conn = await ConnectionManager.getInstance().getConnection();
             const results = await conn.all(SELECT_ALL, []);
             
-            return (results as UserRow[]).map((row: UserRow) => new User(row.id, row.name, row.email, row.password));
+            return (results as UserRow[]).map((row: UserRow) => new User(row.id, row.name, row.email, row.password, toRole(row.role)));
         } catch (error: unknown) {
             logger.error("Failed to get all users", error as Error);
             throw new DbException("Failed to get all users", error as Error);
@@ -123,6 +135,7 @@ export class UserRepository implements IRepository<User>, IInitializable {
                 item.getName(),
                 item.getEmail(),
                 item.getPassword(),
+                item.getRole(),
                 item.getID()
             ]);
             logger.info(`User ${item.getID()} updated`);

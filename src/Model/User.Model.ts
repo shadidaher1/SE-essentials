@@ -1,3 +1,4 @@
+import { ROLE } from "../config/roles";
 import { ID, id } from "../repository/IRepository";
 
 export interface IUser extends ID {
@@ -11,12 +12,14 @@ export class User implements IUser {
     private name: string;
     private email: string;
     private password: string;
+    private role: string;
 
-    constructor(id: id, name: string, email: string, password: string) {
+    constructor(id: id, name: string, email: string, password: string, role: ROLE = ROLE.user) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     getID(): id {
@@ -33,6 +36,10 @@ export class User implements IUser {
 
     getPassword(): string {
         return this.password;
+    }
+
+    getRole(): string {
+        return this.role;
     }
 
     // Utility method to convert to JSON

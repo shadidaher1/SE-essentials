@@ -3,7 +3,8 @@ import { AuthenticationService } from '../services/Authentication.service';
 import { BadRequestException } from '../util/exceptions/http/BadRequestException';
 import { UserRepository } from '../repository/sqlite/User.repository';
 import { UserService } from '../services/User.service';
-import { AuthenticatedRequest } from '../config/types';
+import { AuthenticatedRequest, Userpayload } from '../config/types';
+import { toRole } from '../config/roles';
 
 export class AuthController {
     constructor(private authService: AuthenticationService, private userService: UserService) {}
@@ -19,8 +20,12 @@ export class AuthController {
 
         // validate user credentials
         try {
-        const userId = await this.userService.validateUser(email, password);
-        this.authService.persistAuthentication(res, userId );
+        const user = await this.userService.validateUser(email, password);
+        const userPayload: Userpayload = {
+            userId: user.getID(),
+            role: toRole(user.getRole())
+        }
+    this.authService.persistAuthentication(res,  userPayload);
         
         res.status(200).json({
             status: 'Login success',

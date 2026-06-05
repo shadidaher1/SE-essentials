@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from "../config";
-import { TokenPayload } from '../config/types';
+import { TokenPayload, Userpayload } from '../config/types';
 import { AuthenticationException, InvalidTokenException, TokenExpiredException } from '../util/exceptions/http/AuthenticationException';
 import logger from '../util/logger';
 import { ServiceException } from '../util/exceptions/ServiceException';
@@ -20,15 +20,18 @@ export class AuthenticationService {
                 private refreshTokenExpiration = config.auth.refreshTokenExpiration
             ) {}
 
-    generateToken(userId: string): string {
-        return jwt.sign({ userId }, this.secretKey, { expiresIn: this.tokenExpiration });
+    generateToken(payload: Userpayload): string {
+        return jwt.sign(payload, 
+            this.secretKey,
+             { expiresIn: this.tokenExpiration });
     }
-    generateRefreshToken(userId: string): string {
-        return jwt.sign({ userId }, this.secretKey, { expiresIn: config.auth.refreshTokenExpiration });
+    generateRefreshToken(payload: Userpayload): string {
+        return jwt.sign(payload, 
+            this.secretKey, { expiresIn: config.auth.refreshTokenExpiration });
     }
-    verifyToken(token: string): TokenPayload{
+    verifyToken(token: string): Userpayload{
         try {           
-             return jwt.verify(token, this.secretKey) as TokenPayload;
+             return jwt.verify(token, this.secretKey) as Userpayload;
         } catch (error) {
             logger.error('Token verification failed', { error });
             if (error instanceof jwt.TokenExpiredError) {
@@ -57,9 +60,9 @@ export class AuthenticationService {
         res.clearCookie('token');
         res.clearCookie('refreshToken');
     }
-    persistAuthentication(res: Response, userId: string): void {
-        const token = this.generateToken(userId);
-        const refreshToken = this.generateRefreshToken(userId);
+    persistAuthentication(res: Response, payload: Userpayload): void {
+        const token = this.generateToken(payload);
+        const refreshToken = this.generateRefreshToken(payload);
         this.setTokenIntoCookie(res, token);
         this.setRefreshTokenIntoCookie(res, refreshToken);
 
@@ -70,7 +73,7 @@ export class AuthenticationService {
             if(!payload) {
                 throw new AuthenticationException("Invalid refresh token");
             }
-            const newToken = this.generateToken(payload.userId);
+            const newToken = this.generateToken(payload);
             return newToken;
         } catch (error) {
             logger.error('Refresh token verification failed', { error });
